@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for StyleCop.Analyzers" Description="Code analysis rules for projects with production code" ToolsVersion="15.0">
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.NetAnalyzers" RuleNamespace="Microsoft.CodeAnalysis.NetAnalyzers">
+    <Rule Id="CA1014" Action="None" /> <!-- Mark assemblies with CLSCompliantAttribute -->
+    <Rule Id="CA1062" Action="None" /> <!-- Validate arguments of public methods -->
+    <Rule Id="CA1303" Action="None" /> <!-- Do not pass literals as localized parameters -->
+    <Rule Id="CA1812" Action="None" /> <!-- Avoid uninstantiated internal classes -->
+    <Rule Id="CA2007" Action="None" /> <!-- Do not directly await a Task -->
+  </Rules>
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA0001" Action="None" /> <!-- All diagnostics of XML documentation comments has been disabled due to the current project configuration -->
+    <Rule Id="SA1027" Action="None" /> <!-- The code contains a tab or space character which is not consistent with the current project settings -->
+    <Rule Id="SA1101" Action="None" /> <!-- A call to an instance member of the local class or a base class is not prefixed with 'this.', within a C# code file -->
+    <Rule Id="SA1117" Action="None" /> <!-- The parameters to a C# method or indexer call or declaration are not all on the same line or each on a separate line -->
+    <Rule Id="SA1121" Action="None" /> <!-- The code uses one of the basic C# types, but does not use the built-in alias for the type -->
+    <Rule Id="SA1200" Action="None" /> <!-- A C# using directive is placed outside of a namespace element -->
+    <Rule Id="SA1201" Action="None" /> <!-- An element within a C# code file is out of order in relation to the other elements in the code -->
+    <Rule Id="SA1202" Action="None" /> <!-- An element within a C# code file is out of order within regard to access level, in relation to other elements in the code -->
+    <Rule Id="SA1204" Action="None" /> <!-- A static element is positioned beneath an instance element of the same type -->
+    <Rule Id="SA1600" Action="None" /> <!-- A C# code element is missing a documentation header -->
+    <Rule Id="SA1601" Action="None" /> <!-- A C# partial element is missing a documentation header -->
+    <Rule Id="SA1602" Action="None" /> <!-- An item within a C# enumeration is missing an Xml documentation header -->
+    <Rule Id="SA1633" Action="None" /> <!-- A C# code file is missing a standard file header -->
+  </Rules>
+</RuleSet>
