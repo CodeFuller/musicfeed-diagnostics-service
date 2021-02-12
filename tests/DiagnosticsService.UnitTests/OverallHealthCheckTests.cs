@@ -6,7 +6,6 @@ using HealthChecks.UI.Core;
 using HealthChecks.UI.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.AutoMock;
 
@@ -92,9 +91,6 @@ namespace DiagnosticsService.UnitTests
 			// Assert
 
 			Assert.AreEqual(HealthStatus.Healthy, result.Status);
-
-			// CancellationToken
-			IHostApplicationLifetime
 		}
 
 		private static HealthChecksDb StubDbContext(IEnumerable<HealthCheckExecution> executions)

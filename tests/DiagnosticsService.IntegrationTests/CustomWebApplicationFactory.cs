@@ -18,7 +18,11 @@ namespace DiagnosticsService.IntegrationTests
 		{
 			base.ConfigureWebHost(builder);
 
-			builder.ConfigureAppConfiguration(setupConfiguration);
+			builder.ConfigureAppConfiguration(configBuilder =>
+			{
+				ConfigurationProvider.ApplyConfiguration(configBuilder);
+				setupConfiguration(configBuilder);
+			});
 		}
 	}
 }
