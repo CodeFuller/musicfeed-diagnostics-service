@@ -1,0 +1,29 @@
+# docker pull codefuller/musicfeed-api-service:latest
+# docker pull codefuller/musicfeed-updates-service:latest
+# docker-compose -f "docker-compose.yml" up --no-build
+# docker-compose -f "docker-compose.yml" down
+
+version: '3.5'
+
+services:
+
+  api-service:
+    image: codefuller/musicfeed-api-service:latest
+    depends_on:
+      - updates-service
+    networks:
+      - musicfeed-test-network
+    ports:
+      - "8101:80"
+
+  updates-service:
+    image: codefuller/musicfeed-updates-service:latest
+    networks:
+      - musicfeed-test-network
+    ports:
+      - "8102:80"
+
+networks:
+  musicfeed-test-network:
+    name: musicfeed-test-network
+    driver: bridge

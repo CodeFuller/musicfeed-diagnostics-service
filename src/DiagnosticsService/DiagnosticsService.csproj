@@ -14,6 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="5.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="5.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.321" PrivateAssets="all" />
   </ItemGroup>
 

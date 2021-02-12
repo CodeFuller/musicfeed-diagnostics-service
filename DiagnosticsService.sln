@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4CC1EF55-1080-4BD1-A191-1D4E48C138EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticsService", "src\DiagnosticsService\DiagnosticsService.csproj", "{56AFAC1D-4302-415E-B12A-5EE94F831EFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosticsService", "src\DiagnosticsService\DiagnosticsService.csproj", "{56AFAC1D-4302-415E-B12A-5EE94F831EFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{18915039-CD08-42B1-8A2E-511E26EC7B8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticsService.IntegrationTests", "tests\DiagnosticsService.IntegrationTests\DiagnosticsService.IntegrationTests.csproj", "{24A3A555-ECF1-40FD-8DDC-A955993483B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +21,17 @@ Global
 		{56AFAC1D-4302-415E-B12A-5EE94F831EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56AFAC1D-4302-415E-B12A-5EE94F831EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56AFAC1D-4302-415E-B12A-5EE94F831EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24A3A555-ECF1-40FD-8DDC-A955993483B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24A3A555-ECF1-40FD-8DDC-A955993483B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24A3A555-ECF1-40FD-8DDC-A955993483B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24A3A555-ECF1-40FD-8DDC-A955993483B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{56AFAC1D-4302-415E-B12A-5EE94F831EFA} = {4CC1EF55-1080-4BD1-A191-1D4E48C138EC}
+		{24A3A555-ECF1-40FD-8DDC-A955993483B4} = {18915039-CD08-42B1-8A2E-511E26EC7B8C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {685E889D-B808-4FEA-9E1F-7E5F69B5608E}

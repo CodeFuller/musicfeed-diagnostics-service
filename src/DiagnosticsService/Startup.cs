@@ -10,6 +10,9 @@ namespace DiagnosticsService
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
+
+			services.AddHealthChecksUI()
+				.AddInMemoryStorage();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -26,6 +29,8 @@ namespace DiagnosticsService
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
+
+				endpoints.MapHealthChecksUI(o => o.UIPath = "/services");
 			});
 		}
 	}
