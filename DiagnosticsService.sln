@@ -13,6 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticsService.Integrat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosticsService.UnitTests", "tests\DiagnosticsService.UnitTests\DiagnosticsService.UnitTests.csproj", "{2ABB1497-C010-499E-AE59-A1D768B3EF7D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{D90A9167-0EC9-4C2E-91E9-B53266065CCE}"
+	ProjectSection(SolutionItems) = preProject
+		deploy\diagnostics-service.yaml = deploy\diagnostics-service.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
