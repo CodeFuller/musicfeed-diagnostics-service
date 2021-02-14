@@ -26,6 +26,11 @@ metadata:
     app: diagnostics-service
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 25%
   selector:
     matchLabels:
       app: diagnostics-service
