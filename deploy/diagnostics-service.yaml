@@ -12,7 +12,6 @@ metadata:
   labels:
     app: diagnostics-service
 spec:
-  type: LoadBalancer
   ports:
   - port: 80
     protocol: TCP
