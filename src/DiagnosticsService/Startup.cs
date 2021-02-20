@@ -1,7 +1,9 @@
 using System;
+using AspNetMonsters.ApplicationInsights.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +12,13 @@ namespace DiagnosticsService
 {
 	public class Startup
 	{
+		private readonly IConfiguration configuration;
+
+		public Startup(IConfiguration configuration)
+		{
+			this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+		}
+
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
@@ -22,6 +31,10 @@ namespace DiagnosticsService
 
 			services.AddHealthChecks()
 				.AddCheck<OverallHealthCheck>("Overall", failureStatus: HealthStatus.Unhealthy, tags: new[] { "overall" });
+
+			services.AddApplicationInsightsTelemetry();
+			services.AddApplicationInsightsKubernetesEnricher();
+			services.AddCloudRoleNameInitializer(configuration["applicationInsights:roleName"]);
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

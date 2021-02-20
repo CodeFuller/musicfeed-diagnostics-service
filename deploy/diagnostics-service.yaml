@@ -44,6 +44,12 @@ spec:
           image: codefuller/musicfeed-diagnostics-service:latest
           ports:
             - containerPort: 80
+          env:
+          - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: application-insights
+                key: connectionString
           livenessProbe:
             httpGet:
               path: /health/live
