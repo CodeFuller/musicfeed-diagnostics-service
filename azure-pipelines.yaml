@@ -1,0 +1,95 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: Azure Pipelines
+  vmImage: ubuntu-latest
+
+steps:
+- powershell: |
+   $projectFileName = "src/DiagnosticsService/DiagnosticsService.csproj"
+   
+   [xml]$csproj = Get-Content $projectFileName
+   [System.Xml.XmlElement]$propertyGroup = $csproj.Project.PropertyGroup[0]
+   
+   $serviceVersion = $propertyGroup.Version
+   
+   if ($serviceVersion -eq $null) {
+       $serviceVersion = "0.0.0"
+   }
+   
+   $serviceVersion = $serviceVersion + ".$(Build.BuildId)"
+   
+   if ("$(Build.SourceBranchName)" -ne "master") {
+       $serviceVersion = $serviceVersion + "-preview"
+   }
+   
+   $propertyGroup.Version = $serviceVersion
+   
+   $utf8WithBom = New-Object System.Text.UTF8Encoding($true)
+   $sw = New-Object System.IO.StreamWriter($projectFileName, $false, $utf8WithBom)
+   $csproj.Save($sw)
+   
+   Write-Host "Service version: ${serviceVersion}"
+   Write-Host "##vso[task.setvariable variable=ServiceVersion]${serviceVersion}"
+  displayName: Generate Service Version
+
+- task: DockerCompose@0
+  displayName: Start IT Dependencies
+  inputs:
+    containerregistrytype: Container Registry
+    dockerComposeFile: tests/DiagnosticsService.IntegrationTests/docker-compose.yml
+    dockerComposeCommand: up
+    arguments: --detach
+
+- script: |
+   docker build --target build --network=musicfeed-test-network -t musicfeed/test-results-$(ServiceVersion) -f src/DiagnosticsService/Dockerfile .
+   docker create -ti --name test-results musicfeed/test-results-$(ServiceVersion)
+   docker cp test-results:/project/tests/DiagnosticsService.IntegrationTests/TestResults/DiagnosticsService.trx $(Build.ArtifactStagingDirectory)/DiagnosticsService.IntegrationTests.trx
+   docker rm -fv test-results
+  failOnStderr: true
+  displayName: Docker Build and Copy Test Results
+
+- task: PublishTestResults@2
+  displayName: Publish Test Results
+  inputs:
+    testResultsFormat: VSTest
+    testResultsFiles: '*.trx'
+    searchFolder: $(Build.ArtifactStagingDirectory)
+    mergeTestResults: true
+    failTaskOnFailedTests: true
+
+- task: DockerCompose@0
+  displayName: Stop IT Dependencies
+  inputs:
+    containerregistrytype: Container Registry
+    dockerComposeFile: tests/DiagnosticsService.IntegrationTests/docker-compose.yml
+    dockerComposeCommand: down
+
+- task: Docker@2
+  displayName: Build and Push Docker Image
+  inputs:
+    containerRegistry: codefuller @ hub.docker.com
+    repository: codefuller/musicfeed-diagnostics-service
+    Dockerfile: src/DiagnosticsService/Dockerfile
+    buildContext: .
+    tags: |
+     $(ServiceVersion)
+     latest
+    addPipelineData: false
+
+- powershell: |
+   $fileName = "deploy/diagnostics-service.yaml"
+   $imagePart = "image: codefuller/musicfeed-diagnostics-service"
+   
+   (Get-Content -path $fileName -Raw) -replace "${imagePart}:latest", "${imagePart}:$(ServiceVersion)" | Set-Content -NoNewline -Path $fileName
+  failOnStderr: true
+  displayName: Update Image Tag in k8s Manifest
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: k8s Manifest'
+  inputs:
+    targetPath: deploy/diagnostics-service.yaml
+    artifact: k8s manifest
