@@ -15,7 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosticsService.UnitTest
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{D90A9167-0EC9-4C2E-91E9-B53266065CCE}"
 	ProjectSection(SolutionItems) = preProject
-		pipelines\azure-pipelines.yaml = pipelines\azure-pipelines.yaml
+		pipelines\cd-pipeline.yaml = pipelines\cd-pipeline.yaml
+		pipelines\ci-pipeline.yaml = pipelines\ci-pipeline.yaml
 		pipelines\deploy-template.yaml = pipelines\deploy-template.yaml
 		pipelines\diagnostics-service.yaml = pipelines\diagnostics-service.yaml
 	EndProjectSection

@@ -1,0 +1,20 @@
+name: $(Build.BuildId)
+
+trigger: none
+
+resources:
+  pipelines:
+  - pipeline: ci-pipeline
+    source: Diagnostics Service - CI
+    trigger: true
+
+pool:
+  name: Azure Pipelines
+  vmImage: ubuntu-latest
+
+stages:
+
+- template: deploy-template.yaml
+  parameters:
+    envName: prod
+    envDisplayName: Production

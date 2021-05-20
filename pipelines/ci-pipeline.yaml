@@ -103,8 +103,3 @@ stages:
       inputs:
         targetPath: pipelines/diagnostics-service.yaml
         artifact: k8s-manifest
-
-- template: deploy-template.yaml
-  parameters:
-    envName: prod
-    envDisplayName: Production
