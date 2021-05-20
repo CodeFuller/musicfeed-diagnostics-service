@@ -82,9 +82,7 @@ namespace DiagnosticsService.IntegrationTests
 
 			using var factory = new CustomWebApplicationFactory(configBuilder =>
 			{
-				// We use long interval (1 minute) here.
-				// When tests are executed from CI pipeline, it happens that IT has time to pass shorter interval (e.g. 5 seconds) before health request, which fails the test.
-				configBuilder.AddInMemoryCollection(new[] { new KeyValuePair<string, string>("healthChecksUI:evaluationTimeInSeconds", "60") });
+				configBuilder.AddInMemoryCollection(new[] { new KeyValuePair<string, string>("healthChecksUI:healthChecks:0:uri", "http://localhost/no-such-service/health/ready") });
 			});
 
 			using var client = factory.CreateClient();
