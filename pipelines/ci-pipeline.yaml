@@ -96,10 +96,10 @@ stages:
         
         (Get-Content -path $fileName -Raw) -replace "${imagePart}:latest", "${imagePart}:$(ServiceVersion)" | Set-Content -NoNewline -Path $fileName
       failOnStderr: true
-      displayName: Update Image Tag in k8s Manifest
+      displayName: Update Image Tag in K8s Manifest
 
     - task: PublishPipelineArtifact@1
-      displayName: 'Publish Artifact: k8s Manifest'
+      displayName: 'Publish Artifact: K8s Manifest'
       inputs:
         targetPath: pipelines/diagnostics-service.yaml
-        artifact: k8s-manifest
+        artifact: K8s-manifest

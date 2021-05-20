@@ -31,4 +31,4 @@ stages:
             inputs:
               kubernetesServiceConnection: AWS EKS Cluster
               namespace: musicfeed
-              manifests: "$(Pipeline.Workspace)/k8s-manifest/diagnostics-service.yaml"
+              manifests: "$(Pipeline.Workspace)/K8s-manifest/diagnostics-service.yaml"
