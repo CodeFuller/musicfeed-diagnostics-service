@@ -18,17 +18,17 @@ stages:
         deploy:
           steps:
           - task: DownloadPipelineArtifact@2
-              displayName: Download Artifacts
-              inputs:
-                # Downloading artifacts from last successfull CI build.
-                buildType: specific
-                project: $(System.TeamProjectId)
-                # Id of "Diagnostics Service - CI" pipeline.
-                definition: 18
+            displayName: Download Artifacts
+            inputs:
+            # Downloading artifacts from last successfull CI build.
+            buildType: specific
+            project: $(System.TeamProjectId)
+            # Id of "Diagnostics Service - CI" pipeline.
+            definition: 18
 
           - task: KubernetesManifest@0
-              displayName: Apply Manifest
-              inputs:
-              kubernetesServiceConnection: AWS EKS Cluster
-              namespace: musicfeed
-              manifests: "$(Pipeline.Workspace)/k8s-manifest/diagnostics-service.yaml"
+            displayName: Apply Manifest
+            inputs:
+            kubernetesServiceConnection: AWS EKS Cluster
+            namespace: musicfeed
+            manifests: "$(Pipeline.Workspace)/k8s-manifest/diagnostics-service.yaml"
