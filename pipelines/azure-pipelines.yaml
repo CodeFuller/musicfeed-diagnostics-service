@@ -91,7 +91,7 @@ stages:
         addPipelineData: false
 
     - powershell: |
-        $fileName = "deploy/diagnostics-service.yaml"
+        $fileName = "pipelines/diagnostics-service.yaml"
         $imagePart = "image: codefuller/musicfeed-diagnostics-service"
         
         (Get-Content -path $fileName -Raw) -replace "${imagePart}:latest", "${imagePart}:$(ServiceVersion)" | Set-Content -NoNewline -Path $fileName
@@ -101,7 +101,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifact: k8s Manifest'
       inputs:
-        targetPath: deploy/diagnostics-service.yaml
+        targetPath: pipelines/diagnostics-service.yaml
         artifact: k8s-manifest
 
 - template: deploy-template.yaml

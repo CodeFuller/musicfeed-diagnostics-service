@@ -1,5 +1,5 @@
-# kubectl apply -f "../../musicfeed-updates-service.git/deploy/updates-service.yaml"
-# kubectl apply -f "../../musicfeed-public-api-service.git/deploy/api-service.yaml"
+# kubectl apply -f "../../musicfeed-updates-service.git/pipelines/updates-service.yaml"
+# kubectl apply -f "../../musicfeed-public-api-service.git/pipelines/api-service.yaml"
 # kubectl apply -f "diagnostics-service.yaml"
 # kubectl port-forward service/diagnostics-service 8080:80
 # http://localhost:8080/services/

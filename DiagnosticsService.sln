@@ -9,13 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosticsService", "src\D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{18915039-CD08-42B1-8A2E-511E26EC7B8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticsService.IntegrationTests", "tests\DiagnosticsService.IntegrationTests\DiagnosticsService.IntegrationTests.csproj", "{24A3A555-ECF1-40FD-8DDC-A955993483B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosticsService.IntegrationTests", "tests\DiagnosticsService.IntegrationTests\DiagnosticsService.IntegrationTests.csproj", "{24A3A555-ECF1-40FD-8DDC-A955993483B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosticsService.UnitTests", "tests\DiagnosticsService.UnitTests\DiagnosticsService.UnitTests.csproj", "{2ABB1497-C010-499E-AE59-A1D768B3EF7D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{D90A9167-0EC9-4C2E-91E9-B53266065CCE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{D90A9167-0EC9-4C2E-91E9-B53266065CCE}"
 	ProjectSection(SolutionItems) = preProject
-		deploy\diagnostics-service.yaml = deploy\diagnostics-service.yaml
+		pipelines\azure-pipelines.yaml = pipelines\azure-pipelines.yaml
+		pipelines\deploy-template.yaml = pipelines\deploy-template.yaml
+		pipelines\diagnostics-service.yaml = pipelines\diagnostics-service.yaml
 	EndProjectSection
 EndProject
 Global
