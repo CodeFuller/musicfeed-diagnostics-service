@@ -24,7 +24,7 @@ stages:
               buildType: specific
               project: $(System.TeamProjectId)
               # Id of "Diagnostics Service - CI" pipeline.
-              definition: 18
+              definition: 22
 
           - task: KubernetesManifest@0
             displayName: Apply Manifest
