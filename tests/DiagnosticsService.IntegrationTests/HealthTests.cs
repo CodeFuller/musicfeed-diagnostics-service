@@ -23,7 +23,7 @@ namespace DiagnosticsService.IntegrationTests
 
 			// Act
 
-			var response = await client.GetAsync(new Uri("/health/live", UriKind.Relative));
+			var response = await client.GetAsync(new Uri("/diagnostics/health/live", UriKind.Relative));
 
 			// Assert
 
@@ -42,7 +42,7 @@ namespace DiagnosticsService.IntegrationTests
 
 			// Act
 
-			var response = await client.GetAsync(new Uri("/health/ready", UriKind.Relative));
+			var response = await client.GetAsync(new Uri("/diagnostics/health/ready", UriKind.Relative));
 
 			// Assert
 
@@ -66,7 +66,7 @@ namespace DiagnosticsService.IntegrationTests
 			// Act
 
 			await Task.Delay(TimeSpan.FromSeconds(2), CancellationToken.None);
-			var response = await client.GetAsync(new Uri("/health/overall", UriKind.Relative));
+			var response = await client.GetAsync(new Uri("/diagnostics/health/overall", UriKind.Relative));
 
 			// Assert
 
@@ -90,7 +90,7 @@ namespace DiagnosticsService.IntegrationTests
 			// Act
 
 			// We request status before any health checks are registered, which is treated by OverallHealthCheck as unhealthy result.
-			var response = await client.GetAsync(new Uri("/health/overall", UriKind.Relative));
+			var response = await client.GetAsync(new Uri("/diagnostics/health/overall", UriKind.Relative));
 
 			// Assert
 

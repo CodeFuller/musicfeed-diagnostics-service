@@ -19,7 +19,7 @@ namespace DiagnosticsService.IntegrationTests
 
 			// Act
 
-			var response = await client.GetAsync(new Uri("/services", UriKind.Relative));
+			var response = await client.GetAsync(new Uri("/diagnostics/services", UriKind.Relative));
 
 			// Assert
 
