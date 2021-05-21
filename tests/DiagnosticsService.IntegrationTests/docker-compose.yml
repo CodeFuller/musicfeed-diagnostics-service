@@ -1,7 +1,7 @@
 # docker pull codefuller/musicfeed-api-service:latest
 # docker pull codefuller/musicfeed-updates-service:latest
-# docker-compose -f "docker-compose.yml" up --no-build
-# docker-compose -f "docker-compose.yml" down
+# docker comose up --no-build
+# docker compose down
 
 version: '3.5'
 
