@@ -7,6 +7,10 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
+- template: deploy-template.yaml
+  parameters:
+    envName: test
+    envDisplayName: Test
 
 - template: deploy-template.yaml
   parameters:
