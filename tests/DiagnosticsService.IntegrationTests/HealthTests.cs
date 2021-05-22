@@ -65,7 +65,7 @@ namespace DiagnosticsService.IntegrationTests
 
 			// Act
 
-			await Task.Delay(TimeSpan.FromSeconds(2), CancellationToken.None);
+			await Task.Delay(TimeSpan.FromSeconds(3), CancellationToken.None);
 			var response = await client.GetAsync(new Uri("/health/overall", UriKind.Relative));
 
 			// Assert
@@ -82,14 +82,18 @@ namespace DiagnosticsService.IntegrationTests
 
 			using var factory = new CustomWebApplicationFactory(configBuilder =>
 			{
-				configBuilder.AddInMemoryCollection(new[] { new KeyValuePair<string, string>("healthChecksUI:healthChecks:0:uri", "http://localhost/no-such-service/health/ready") });
+				configBuilder.AddInMemoryCollection(new[]
+				{
+					new KeyValuePair<string, string>("healthChecksUI:evaluationTimeInSeconds", "1"),
+					new KeyValuePair<string, string>("healthChecksUI:healthChecks:0:uri", "http://localhost/no-such-service/health/ready"),
+				});
 			});
 
 			using var client = factory.CreateClient();
 
 			// Act
 
-			// We request status before any health checks are registered, which is treated by OverallHealthCheck as unhealthy result.
+			await Task.Delay(TimeSpan.FromSeconds(3), CancellationToken.None);
 			var response = await client.GetAsync(new Uri("/health/overall", UriKind.Relative));
 
 			// Assert
