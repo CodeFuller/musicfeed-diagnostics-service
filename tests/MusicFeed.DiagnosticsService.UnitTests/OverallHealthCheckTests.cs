@@ -45,9 +45,9 @@ namespace MusicFeed.DiagnosticsService.UnitTests
 
 			var executions = new[]
 			{
-				new HealthCheckExecution { Status = UIHealthStatus.Healthy },
-				new HealthCheckExecution { Status = unhealthyStatus },
-				new HealthCheckExecution { Status = UIHealthStatus.Healthy },
+				new HealthCheckExecution { Name = "test1", Uri = "test1", Status = UIHealthStatus.Healthy },
+				new HealthCheckExecution { Name = "test2", Uri = "test2", Status = unhealthyStatus },
+				new HealthCheckExecution { Name = "test3", Uri = "test3", Status = UIHealthStatus.Healthy },
 			};
 
 			await using var dbContext = StubDbContext(executions);
@@ -73,8 +73,8 @@ namespace MusicFeed.DiagnosticsService.UnitTests
 
 			var executions = new[]
 			{
-				new HealthCheckExecution { Status = UIHealthStatus.Healthy },
-				new HealthCheckExecution { Status = UIHealthStatus.Healthy },
+				new HealthCheckExecution { Name = "test1", Uri = "test1", Status = UIHealthStatus.Healthy },
+				new HealthCheckExecution { Name = "test2", Uri = "test2", Status = UIHealthStatus.Healthy },
 			};
 
 			await using var dbContext = StubDbContext(executions);
