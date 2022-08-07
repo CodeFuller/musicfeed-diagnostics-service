@@ -12,7 +12,7 @@ WORKDIR /build
 
 COPY ["src/MusicFeed.DiagnosticsService/MusicFeed.DiagnosticsService.csproj", "src/MusicFeed.DiagnosticsService/"]
 COPY ["tests/MusicFeed.DiagnosticsService.IntegrationTests/MusicFeed.DiagnosticsService.IntegrationTests.csproj", "tests/MusicFeed.DiagnosticsService.IntegrationTests/"]
-COPY ["tests/MusicFeed.DiagnosticsService.UnitTests/MusicFeed.DiagnosticsService.UnitTests.csproj", "/project/tests/MusicFeed.DiagnosticsService.UnitTests/"]
+COPY ["tests/MusicFeed.DiagnosticsService.UnitTests/MusicFeed.DiagnosticsService.UnitTests.csproj", "tests/MusicFeed.DiagnosticsService.UnitTests/"]
 COPY ["MusicFeed.DiagnosticsService.Build.sln", "./"]
 COPY ["MusicFeed.DiagnosticsService.src.ruleset", "./"]
 COPY ["MusicFeed.DiagnosticsService.tests.ruleset", "./"]
