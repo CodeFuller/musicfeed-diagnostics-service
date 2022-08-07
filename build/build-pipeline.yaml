@@ -1,0 +1,199 @@
+name: $(Build.BuildId)
+
+trigger:
+  branches:
+    include:
+      - master
+
+pool:
+  name: Azure Pipelines
+  vmImage: ubuntu-latest
+
+parameters:
+  - name: PublishArtifacts
+    displayName: Publish Artifacts
+    type: boolean
+    default: true
+
+variables:
+  - group: MusicFeedVariables
+  - name: ReleaseBranchName
+    value: master
+    readonly: true
+  - name: DockerfilePath
+    value: src/MusicFeed.DiagnosticsService/Dockerfile
+    readonly: true
+  - name: DockerComposeFilePath
+    value: tests/MusicFeed.DiagnosticsService.IntegrationTests/docker-compose.yaml
+    readonly: true
+  - name: DockerImageName
+    value: musicfeed-diagnostics-service
+    readonly: true
+  - name: CodeCoverageAssemblyFilters
+    value: '+*'
+    readonly: true
+
+stages:
+- stage: BuildDockerImageStage
+  displayName: Build Docker Image
+  jobs:
+  - job: BuildDockerImageJob
+    displayName: Build Docker Image
+    workspace:
+      clean: all
+    variables:
+      disable.coverage.autogenerate: true
+    steps:
+    - task: PowerShell@2
+      displayName: Define Build Version
+      inputs:
+        targetType: 'inline'
+        script: |
+          $appVersion = (Select-String -Path '$(DockerImageName)/Chart.yaml' -Pattern '^appVersion: "(\d+\.\d+\.\d+)"$').matches.groups[1].Value
+
+          if ('$(Build.SourceBranchName)' -ine '$(ReleaseBranchName)') {
+              $buildVersionSuffix = '-preview'
+              $helmChartVersionSuffix = "$buildVersionSuffix-$(Build.BuildId)"
+          }
+
+          $buildVersion = "$appVersion.$(Build.BuildId)$buildVersionSuffix"
+
+          Write-Host "##vso[build.updatebuildnumber]$buildVersion"
+          Write-Host "##vso[task.setvariable variable=BuildVersion]$buildVersion"
+          Write-Host "##vso[task.setvariable variable=FullDockerImageName]$(GlobalConfig.DockerHubAccountName)/$(DockerImageName)"
+          Write-Host "##vso[task.setvariable variable=HelmChartVersion]$appVersion$helmChartVersionSuffix"
+          Write-Host "##vso[task.setvariable variable=BuildImageTag]$(DockerImageName)-build:$buildVersion"
+          Write-Host "##vso[task.setvariable variable=TestsImageTag]$(DockerImageName)-tests:$buildVersion"
+          Write-Host "##vso[task.setvariable variable=TestsContainerName]$(DockerImageName)-tests-$buildVersion"
+
+    - task: DockerCompose@0
+      displayName: Start IT Dependencies
+      inputs:
+        containerregistrytype: Container Registry
+        dockerComposeFile: $(DockerComposeFilePath)
+        dockerComposeCommand: up
+        arguments: --detach
+
+    - task: Docker@2
+      displayName: Build Service
+      inputs:
+        command: build
+        Dockerfile: $(DockerfilePath)
+        buildContext: '.'
+        arguments: --target build --network=musicfeed-test-network --tag $(BuildImageTag)
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      displayName: Test Service
+      inputs:
+        command: build
+        Dockerfile: $(DockerfilePath)
+        buildContext: '.'
+        arguments: --target test --network=musicfeed-test-network --tag $(TestsImageTag)
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      displayName: Create Container With Test Results
+      inputs:
+        command: create
+        arguments: --tty --interactive --name $(TestsContainerName) $(TestsImageTag)
+
+    - task: Docker@2
+      displayName: Copy Test Results
+      inputs:
+        command: cp
+        arguments: $(TestsContainerName):/build/TestResults $(Build.ArtifactStagingDirectory)
+
+    - task: Docker@2
+      displayName: Remove Container With Test Results
+      inputs:
+        command: rm
+        arguments: --force --volumes $(TestsContainerName)
+
+    - task: DockerCompose@0
+      displayName: Stop IT Dependencies
+      inputs:
+        containerregistrytype: Container Registry
+        dockerComposeFile: $(DockerComposeFilePath)
+        dockerComposeCommand: down
+
+    - task: PublishTestResults@2
+      displayName: Publish Test Results
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: TestResults/**/*.trx
+        searchFolder: $(Build.ArtifactStagingDirectory)
+        mergeTestResults: true
+        failTaskOnFailedTests: true
+
+    - task: reportgenerator@5
+      displayName: Merge Code Coverage Reports
+      inputs:
+        reports: $(Build.ArtifactStagingDirectory)/TestResults/**/coverage.cobertura.xml
+        sourcedirs: $(Build.SourcesDirectory)
+        targetdir: $(Build.ArtifactStagingDirectory)/TestResults/merged
+        assemblyfilters: $(CodeCoverageAssemblyFilters)
+        reporttypes: HtmlInline_AzurePipelines;Cobertura
+        verbosity: Verbose
+
+    - task: PublishCodeCoverageResults@1
+      displayName: Publish Code Coverage
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(Build.ArtifactStagingDirectory)/TestResults/merged/Cobertura.xml
+        reportDirectory: $(Build.ArtifactStagingDirectory)/TestResults/merged
+        failIfCoverageEmpty: true
+
+    - task: Docker@2
+      displayName: Build Docker Image
+      inputs:
+        command: build
+        Dockerfile: $(DockerfilePath)
+        buildContext: '.'
+        arguments: --tag $(FullDockerImageName):$(BuildVersion) --tag $(FullDockerImageName):latest
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      displayName: Push Docker Image
+      condition: and(succeeded(), eq('${{ parameters.PublishArtifacts }}', 'true'))
+      inputs:
+        containerRegistry: codefuller @ hub.docker.com
+        repository: $(FullDockerImageName)
+        command: push
+        tags: |
+          $(BuildVersion)
+          latest
+        addPipelineData: false
+        addBaseImageData: false
+
+    - task: Docker@2
+      displayName: Remove Docker Images
+      inputs:
+        command: image
+        arguments: rm $(BuildImageTag) $(TestsImageTag) $(FullDockerImageName):$(BuildVersion) $(FullDockerImageName):latest
+
+    - task: Docker@2
+      displayName: Remove Dangling Docker Images
+      inputs:
+        command: image
+        arguments: prune -f
+
+    - task: HelmDeploy@0
+      displayName: Package Helm Chart
+      inputs:
+        command: package
+        chartPath: $(DockerImageName)
+        chartVersion: '$(HelmChartVersion)'
+        destination: $(Build.ArtifactStagingDirectory)
+        save: false
+        arguments: --app-version $(BuildVersion)
+
+    - task: PublishPipelineArtifact@1
+      displayName: Publish Helm Chart
+      condition: and(succeeded(), eq('${{ parameters.PublishArtifacts }}', 'true'))
+      inputs:
+        targetPath: $(Build.ArtifactStagingDirectory)/$(DockerImageName)-$(HelmChartVersion).tgz
+        artifact: $(DockerImageName)-$(HelmChartVersion).tgz

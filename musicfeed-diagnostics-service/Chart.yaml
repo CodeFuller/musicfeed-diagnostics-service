@@ -1,0 +1,8 @@
+apiVersion: v2
+name: musicfeed-diagnostics-service
+description: A Helm chart for Music Feed Diagnostics Service.
+
+type: application
+
+version: 1.0.0
+appVersion: "0.1.0"
