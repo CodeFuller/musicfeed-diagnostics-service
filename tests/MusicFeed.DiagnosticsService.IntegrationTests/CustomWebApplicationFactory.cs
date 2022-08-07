@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DiagnosticsService.IntegrationTests
+namespace MusicFeed.DiagnosticsService.IntegrationTests
 {
 	public class CustomWebApplicationFactory : WebApplicationFactory<Startup>
 	{

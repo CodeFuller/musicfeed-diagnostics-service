@@ -7,7 +7,7 @@ using HealthChecks.UI.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace DiagnosticsService
+namespace MusicFeed.DiagnosticsService
 {
 	public class OverallHealthCheck : IHealthCheck
 	{

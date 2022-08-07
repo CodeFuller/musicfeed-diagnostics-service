@@ -1,11 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Rules for StyleCop.Analyzers" Description="Code analysis rules for projects with production code" ToolsVersion="15.0">
+<RuleSet Name="Rules for StyleCop.Analyzers" Description="Code analysis rules for test projects" ToolsVersion="15.0">
   <Rules AnalyzerId="Microsoft.CodeAnalysis.NetAnalyzers" RuleNamespace="Microsoft.CodeAnalysis.NetAnalyzers">
     <Rule Id="CA1014" Action="None" /> <!-- Mark assemblies with CLSCompliantAttribute -->
     <Rule Id="CA1062" Action="None" /> <!-- Validate arguments of public methods -->
     <Rule Id="CA1303" Action="None" /> <!-- Do not pass literals as localized parameters -->
+    <Rule Id="CA1707" Action="None" /> <!-- Identifiers should not contain underscores -->
     <Rule Id="CA1812" Action="None" /> <!-- Avoid uninstantiated internal classes -->
+    <Rule Id="CA1848" Action="None" /> <!-- For improved performance, use the LoggerMessage delegates -->
     <Rule Id="CA2007" Action="None" /> <!-- Do not directly await a Task -->
+    <Rule Id="CA2254" Action="None" /> <!-- The logging message template should not vary between calls -->
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SA0001" Action="None" /> <!-- All diagnostics of XML documentation comments has been disabled due to the current project configuration -->
@@ -17,6 +20,7 @@
     <Rule Id="SA1201" Action="None" /> <!-- An element within a C# code file is out of order in relation to the other elements in the code -->
     <Rule Id="SA1202" Action="None" /> <!-- An element within a C# code file is out of order within regard to access level, in relation to other elements in the code -->
     <Rule Id="SA1204" Action="None" /> <!-- A static element is positioned beneath an instance element of the same type -->
+    <Rule Id="SA1512" Action="None" /> <!-- A single-line comment within C# code is followed by a blank line -->
     <Rule Id="SA1600" Action="None" /> <!-- A C# code element is missing a documentation header -->
     <Rule Id="SA1601" Action="None" /> <!-- A C# partial element is missing a documentation header -->
     <Rule Id="SA1602" Action="None" /> <!-- An item within a C# enumeration is missing an Xml documentation header -->

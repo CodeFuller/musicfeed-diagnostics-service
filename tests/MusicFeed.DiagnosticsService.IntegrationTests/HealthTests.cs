@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DiagnosticsService.IntegrationTests
+namespace MusicFeed.DiagnosticsService.IntegrationTests
 {
 	[TestClass]
 	public class HealthTests

@@ -8,7 +8,7 @@
 
   <PropertyGroup>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <CodeAnalysisRuleSet>../../DiagnosticsService.tests.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>../../MusicFeed.DiagnosticsService.tests.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\DiagnosticsService\DiagnosticsService.csproj" />
+    <ProjectReference Include="..\..\src\MusicFeed.DiagnosticsService\MusicFeed.DiagnosticsService.csproj" />
   </ItemGroup>
 
 </Project>

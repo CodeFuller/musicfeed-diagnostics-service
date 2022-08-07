@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
-namespace DiagnosticsService.IntegrationTests
+namespace MusicFeed.DiagnosticsService.IntegrationTests
 {
 	public static class ConfigurationProvider
 	{

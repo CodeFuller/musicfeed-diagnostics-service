@@ -10,7 +10,7 @@
 
   <PropertyGroup>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <CodeAnalysisRuleSet>../../DiagnosticsService.src.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>../../MusicFeed.DiagnosticsService.src.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.AutoMock;
 
-namespace DiagnosticsService.UnitTests
+namespace MusicFeed.DiagnosticsService.UnitTests
 {
 	[TestClass]
 	public class OverallHealthCheckTests

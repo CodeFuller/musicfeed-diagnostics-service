@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace DiagnosticsService
+namespace MusicFeed.DiagnosticsService
 {
 	public static class Program
 	{

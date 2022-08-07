@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DiagnosticsService.IntegrationTests
+namespace MusicFeed.DiagnosticsService.IntegrationTests
 {
 	[TestClass]
 	public class ServicesPageTests
