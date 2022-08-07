@@ -1,0 +1,77 @@
+name: $(Build.BuildId)
+
+trigger: none
+
+pool:
+  name: Azure Pipelines
+  vmImage: ubuntu-latest
+
+resources:
+  pipelines:
+  - pipeline: BuildPipeline
+    source: Build Diagnostics Service
+    branch: master
+
+variables:
+  - name: ServiceName
+    value: musicfeed-diagnostics-service
+    readonly: true
+
+stages:
+- stage: PrepareDeploymentStage
+  displayName: Prepare Deployment
+  jobs:
+  - job: PrepareDeploymentJob
+    displayName: Prepare Deployment
+    steps:
+    - powershell: |
+        $buildBranch = '$(resources.pipeline.BuildPipeline.sourceBranch)'
+        $deployBranch = '$(Build.SourceBranch)'
+
+        if ($deployBranch -ne $buildBranch) {
+          throw "Deployment branch does not match build branch: '$deployBranch' != '$buildBranch'"
+        }
+      displayName: Check Deployment
+
+    - powershell: |
+        $buildVersion = '$(resources.pipeline.BuildPipeline.runName)'
+        if ($buildVersion -notmatch '^(\d+\.\d+\.\d+)\.(\d+)(-preview)?$') {
+            throw "Failed to parse build version '$buildVersion'"
+        }
+
+        if ($Matches.3) {
+            $helmChartVersion = "$($Matches.1)$($Matches.3)-$($Matches.2)"
+        } else {
+            $helmChartVersion = $Matches.1
+        }
+
+        Write-Host "##vso[build.updatebuildnumber]$buildVersion-#$(Build.BuildId)"
+        Write-Host "##vso[task.setvariable variable=HelmChartName;isOutput=true]$(ServiceName)-$helmChartVersion.tgz"
+      name: DefineBuildVersion
+      displayName: Define Build Version
+
+- stage: DeployToTestEnvironmentStage
+  displayName: Deploy to Test Environment
+  dependsOn: PrepareDeploymentStage
+  variables: 
+    HelmChartName: $[ stageDependencies.PrepareDeploymentStage.PrepareDeploymentJob.outputs['DefineBuildVersion.HelmChartName'] ]
+  jobs:
+    - template: deployment-pipeline-template.yaml
+      parameters:
+        EnvName: test
+        EnvDisplayName: Test
+        SubdomainName: musicfeed-test
+
+- stage: DeployToProdEnvironmentStage
+  displayName: Deploy to Production Environment
+  dependsOn:
+    - PrepareDeploymentStage
+    - DeployToTestEnvironmentStage
+  variables: 
+    HelmChartName: $[ stageDependencies.PrepareDeploymentStage.PrepareDeploymentJob.outputs['DefineBuildVersion.HelmChartName'] ]
+  jobs:
+    - template: deployment-pipeline-template.yaml
+      parameters:
+        EnvName: prod
+        EnvDisplayName: Production
+        SubdomainName: musicfeed

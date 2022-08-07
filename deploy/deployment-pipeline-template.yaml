@@ -1,0 +1,48 @@
+parameters:
+- name: EnvName
+  type: string
+- name: EnvDisplayName
+  type: string
+- name: SubdomainName
+  type: string
+
+jobs:
+- deployment: DeployJob
+  displayName: Deploy to ${{ parameters.EnvDisplayName }} Environment
+  environment: ${{ parameters.EnvName }}
+  variables:
+    - group: MusicFeedVariables
+    - group: MusicFeedVariables.${{ parameters.EnvName }}
+    - name: ServiceName
+      value: musicfeed-diagnostics-service
+      readonly: true
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: BuildPipeline
+          displayName: Download Helm Chart
+          artifact: $(HelmChartName)
+
+        - task: HelmDeploy@0
+          displayName: Install Helm Chart
+          inputs:
+            connectionType: Kubernetes Service Connection
+            kubernetesServiceEndpoint: AWS EKS Cluster
+            namespace: $(GlobalConfig.Kubernetes.Namespace)
+            command: upgrade
+            chartName: $(Pipeline.Workspace)/BuildPipeline/$(HelmChartName)/$(HelmChartName)
+            releaseName: $(ServiceName)
+            overrideValues: |
+              certificateArn=$(GlobalConfig.AWS.CertificateArn)
+              domainName=${{ parameters.SubdomainName }}.$(GlobalConfig.DomainName)
+            waitForExecution: false
+
+        - task: Kubernetes@1
+          displayName: Wait For Rollout
+          inputs:
+            connectionType: Kubernetes Service Connection
+            kubernetesServiceEndpoint: AWS EKS Cluster
+            namespace: $(GlobalConfig.Kubernetes.Namespace)
+            command: rollout
+            arguments: status -w deployment/$(ServiceName) --timeout=5m
