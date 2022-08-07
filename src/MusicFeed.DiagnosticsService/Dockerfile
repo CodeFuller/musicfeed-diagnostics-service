@@ -4,10 +4,10 @@
 # docker build --network=musicfeed-test-network -t musicfeed/diagnostics-service:latest -f "Dockerfile" ../..
 # docker-compose -f "../../tests/MusicFeed.DiagnosticsService.IntegrationTests/docker-compose.yml" down
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 COPY ["src/MusicFeed.DiagnosticsService/MusicFeed.DiagnosticsService.csproj", "/project/src/MusicFeed.DiagnosticsService/"]
 COPY ["tests/MusicFeed.DiagnosticsService.IntegrationTests/MusicFeed.DiagnosticsService.IntegrationTests.csproj", "/project/tests/MusicFeed.DiagnosticsService.IntegrationTests/"]
