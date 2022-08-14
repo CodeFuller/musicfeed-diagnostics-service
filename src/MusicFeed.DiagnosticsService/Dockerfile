@@ -1,8 +1,8 @@
 # docker pull codefuller/musicfeed-updates-service:latest
 # docker pull codefuller/musicfeed-api-service:latest
-# docker-compose -f "tests/MusicFeed.DiagnosticsService.IntegrationTests/docker-compose.yaml" up --no-build --detach
-# docker build --network=musicfeed-test-network -t musicfeed/diagnostics-service:latest -f "src/MusicFeed.DiagnosticsService/Dockerfile" .
-# docker-compose -f "tests/MusicFeed.DiagnosticsService.IntegrationTests/docker-compose.yaml" down
+# docker-compose -f "../../tests/MusicFeed.DiagnosticsService.IntegrationTests/docker-compose.yaml" up --no-build --detach
+# docker build --network=host -t musicfeed/diagnostics-service:latest -f "../../src/MusicFeed.DiagnosticsService/Dockerfile" ../..
+# docker-compose -f "../../tests/MusicFeed.DiagnosticsService.IntegrationTests/docker-compose.yaml" down
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 EXPOSE 80

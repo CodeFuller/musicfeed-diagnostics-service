@@ -80,7 +80,7 @@ stages:
         command: build
         Dockerfile: $(DockerfilePath)
         buildContext: '.'
-        arguments: --target build --network=musicfeed-test-network --tag $(BuildImageTag)
+        arguments: --target build --network=host --tag $(BuildImageTag)
         addPipelineData: false
         addBaseImageData: false
 
@@ -90,9 +90,16 @@ stages:
         command: build
         Dockerfile: $(DockerfilePath)
         buildContext: '.'
-        arguments: --target test --network=musicfeed-test-network --tag $(TestsImageTag)
+        arguments: --target test --network=host --tag $(TestsImageTag)
         addPipelineData: false
         addBaseImageData: false
+
+    - task: DockerCompose@0
+      displayName: Stop IT Dependencies
+      inputs:
+        containerregistrytype: Container Registry
+        dockerComposeFile: $(DockerComposeFilePath)
+        dockerComposeCommand: down
 
     - task: Docker@2
       displayName: Create Container With Test Results
@@ -111,13 +118,6 @@ stages:
       inputs:
         command: rm
         arguments: --force --volumes $(TestsContainerName)
-
-    - task: DockerCompose@0
-      displayName: Stop IT Dependencies
-      inputs:
-        containerregistrytype: Container Registry
-        dockerComposeFile: $(DockerComposeFilePath)
-        dockerComposeCommand: down
 
     - task: PublishTestResults@2
       displayName: Publish Test Results
@@ -152,7 +152,7 @@ stages:
         command: build
         Dockerfile: $(DockerfilePath)
         buildContext: '.'
-        arguments: --tag $(FullDockerImageName):$(BuildVersion) --tag $(FullDockerImageName):latest
+        arguments:  --network=host --tag $(FullDockerImageName):$(BuildVersion) --tag $(FullDockerImageName):latest
         addPipelineData: false
         addBaseImageData: false
 

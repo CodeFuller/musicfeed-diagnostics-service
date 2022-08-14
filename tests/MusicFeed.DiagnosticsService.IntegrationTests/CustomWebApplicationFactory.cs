@@ -24,7 +24,6 @@ namespace MusicFeed.DiagnosticsService.IntegrationTests
 
 			builder.ConfigureAppConfiguration(configBuilder =>
 			{
-				ConfigurationProvider.ApplyConfiguration(configBuilder);
 				setupConfiguration(configBuilder);
 			});
 
