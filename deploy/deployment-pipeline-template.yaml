@@ -19,7 +19,7 @@ jobs:
         steps:
         - download: BuildPipeline
           displayName: Download Helm Chart
-          artifact: $(HelmChartName)
+          artifact: helm-chart
 
         - task: HelmDeploy@0
           displayName: Install Helm Chart
@@ -28,7 +28,7 @@ jobs:
             kubernetesServiceEndpoint: AWS EKS Cluster
             namespace: $(GlobalConfig.Kubernetes.Namespace)
             command: upgrade
-            chartName: $(Pipeline.Workspace)/BuildPipeline/$(HelmChartName)/$(HelmChartName)
+            chartName: $(Pipeline.Workspace)/BuildPipeline/helm-chart/$(HelmChartName)
             releaseName: $(ServiceName)
             overrideValues: |
               certificateArn=$(GlobalConfig.AWS.CertificateArn)
